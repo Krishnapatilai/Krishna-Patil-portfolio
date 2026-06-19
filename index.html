@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Krishna Patil — Aspiring Product Manager</title>
+  <meta name="description" content="Krishna Patil — Aspiring Product Manager. Curious enough to question everything. Builder enough to create solutions." />
+  <meta property="og:title" content="Krishna Patil — Aspiring Product Manager" />
+  <meta property="og:description" content="A future PM's digital headquarters. Curious, thoughtful, obsessed with understanding problems." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg: #0A0A0F;
+      --bg2: #111118;
+      --surface: rgba(255,255,255,0.04);
+      --surface-hover: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.08);
+      --text: #F0F0EB;
+      --muted: rgba(240,240,235,0.45);
+      --accent: #6366F1;
+      --accent-glow: rgba(99,102,241,0.25);
+      --lime: #E8FF6B;
+      --lime-dim: rgba(232,255,107,0.12);
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'Inter', system-ui, sans-serif;
+      --radius: 16px;
+      --radius-sm: 8px;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    [data-theme="light"] {
+      --bg: #F8F8F3;
+      --bg2: #EFEFE9;
+      --surface: rgba(0,0,0,0.04);
+      --surface-hover: rgba(0,0,0,0.07);
+      --border: rgba(0,0,0,0.08);
+      --text: #0A0A0F;
+      --muted: rgba(10,10,15,0.5);
+      --accent: #4F46E5;
+      --accent-glow: rgba(79,70,229,0.2);
+      --lime: #5B5F00;
+      --lime-dim: rgba(91,95,0,0.08);
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* ── PROGRESS BAR ── */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--lime));
+      width: 0%; z-index: 9999; transition: width 0.1s linear;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(10,10,15,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    [data-theme="light"] nav { background: rgba(248,248,243,0.8); }
+    nav.scrolled { border-color: var(--border); }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a {
+      font-size: 0.85rem; font-weight: 500; color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+    #theme-toggle {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: background 0.2s;
+      color: var(--text);
+    }
+    #theme-toggle:hover { background: var(--surface-hover); }
+    .nav-cta {
+      padding: 0.5rem 1.25rem; border-radius: 100px;
+      background: var(--accent); color: #fff;
+      font-size: 0.85rem; font-weight: 600;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 100px clamp(1.5rem, 8vw, 8rem) 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(99,102,241,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse 40% 50% at 10% 80%, rgba(232,255,107,0.05) 0%, transparent 50%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.03;
+      background-image: linear-gradient(var(--text) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--text) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 1rem; border-radius: 100px;
+      background: var(--lime-dim); border: 1px solid rgba(232,255,107,0.2);
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--lime);
+      margin-bottom: 2rem;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.6s var(--ease) 0.2s forwards;
+    }
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 7vw, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      opacity: 0; transform: translateY(30px);
+      animation: fadeUp 0.8s var(--ease) 0.4s forwards;
+    }
+    .hero-headline em { font-style: italic; color: var(--accent); }
+    .hero-headline .highlight-word { position: relative; display: inline-block; }
+    .hero-headline .highlight-word::after {
+      content: '';
+      position: absolute; left: 0; bottom: 4px; right: 0; height: 3px;
+      background: var(--lime); border-radius: 2px;
+      transform: scaleX(0); transform-origin: left;
+      animation: lineGrow 0.6s var(--ease) 1.2s forwards;
+    }
+    @keyframes lineGrow { to { transform: scaleX(1); } }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted); max-width: 560px;
+      line-height: 1.7; margin-bottom: 2.5rem;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease) 0.6s forwards;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+    .hero-ctas {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease) 0.8s forwards;
+    }
+    .btn-primary {
+      padding: 0.85rem 2rem; border-radius: 100px;
+      background: var(--accent); color: #fff;
+      font-weight: 600; font-size: 0.95rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 0 0 var(--accent-glow);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+    .btn-secondary {
+      padding: 0.85rem 2rem; border-radius: 100px;
+      background: var(--surface); color: var(--text);
+      font-weight: 600; font-size: 0.95rem;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { transform: translateY(-2px); background: var(--surface-hover); }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--muted); font-size: 0.75rem; letter-spacing: 0.05em;
+      animation: fadeUp 1s var(--ease) 1.5s both;
+    }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+
+    /* ── FLOATING QUESTION MARK (signature element) ── */
+    .hero-qmark {
+      position: absolute; right: clamp(2rem, 10vw, 12rem); top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(8rem, 18vw, 22rem);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(99,102,241,0.15);
+      user-select: none; pointer-events: none;
+      animation: floatQ 8s ease-in-out infinite;
+      opacity: 0;
+      animation: floatQ 8s ease-in-out infinite, qFadeIn 1s var(--ease) 1s forwards;
+    }
+    @keyframes floatQ {
+      0%,100% { transform: translateY(-50%) rotate(-5deg); }
+      50% { transform: translateY(calc(-50% - 20px)) rotate(5deg); }
+    }
+    @keyframes qFadeIn { to { opacity: 1; } }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 8vw, 8rem); }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.1; letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--muted); }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── ABOUT ── */
+    .about { background: var(--bg2); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+    .about-visual { position: relative; }
+    .about-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2.5rem;
+      position: relative; overflow: hidden;
+    }
+    .about-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--lime));
+    }
+    .about-tagline {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.4rem; line-height: 1.4;
+      margin-bottom: 1.5rem; color: var(--text);
+    }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .stat-item { text-align: center; padding: 1rem; background: var(--bg); border-radius: var(--radius-sm); }
+    .stat-num { font-family: var(--serif); font-size: 2rem; color: var(--accent); }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+    .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.25rem; font-size: 1.05rem; }
+    .about-text p strong { color: var(--text); font-weight: 600; }
+    .about-quote {
+      margin-top: 2rem; padding: 1.25rem 1.5rem;
+      border-left: 3px solid var(--lime); background: var(--lime-dim);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 1.05rem; font-style: italic; color: var(--text);
+    }
+    .traits { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .trait {
+      padding: 0.35rem 0.9rem; border-radius: 100px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 0.8rem; font-weight: 500; color: var(--muted);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .trait:hover { color: var(--text); border-color: var(--accent); }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .project-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 60px rgba(99,102,241,0.15);
+    }
+    .project-card.placeholder { border-style: dashed; opacity: 0.6; }
+    .project-card.placeholder:hover { opacity: 0.9; border-style: solid; }
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; background: var(--accent-glow);
+    }
+    .project-tag {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 100px;
+      background: var(--lime-dim); color: var(--lime);
+    }
+    .project-title {
+      font-family: var(--serif); font-size: 1.4rem; line-height: 1.2;
+      margin-bottom: 0.5rem; letter-spacing: -0.01em;
+    }
+    .project-problem { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+    .project-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+    .chip {
+      font-size: 0.72rem; padding: 0.2rem 0.65rem; border-radius: 100px;
+      background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+    }
+    .project-lesson {
+      padding: 0.85rem 1rem; background: var(--bg);
+      border-radius: var(--radius-sm); border-left: 2px solid var(--accent);
+      font-size: 0.82rem; font-style: italic; color: var(--muted); line-height: 1.5;
+    }
+    .project-arrow {
+      position: absolute; bottom: 1.5rem; right: 1.5rem;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      transform: translateX(0); transition: transform 0.2s;
+    }
+    .project-card:hover .project-arrow { transform: translateX(3px) translateY(-3px); }
+
+    /* ── CASE STUDIES ── */
+    .case-studies { background: var(--bg2); }
+    .case-tabs { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .case-tab {
+      padding: 0.6rem 1.25rem; border-radius: 100px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 0.85rem; font-weight: 500; color: var(--muted);
+      transition: all 0.2s; cursor: pointer;
+    }
+    .case-tab.active, .case-tab:hover {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    .case-panel { display: none; }
+    .case-panel.active { display: block; }
+    .case-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start; max-width: 1100px; }
+    .case-meta h3 {
+      font-family: var(--serif); font-size: 2rem;
+      letter-spacing: -0.02em; margin-bottom: 1rem; line-height: 1.2;
+    }
+    .case-meta p { color: var(--muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .case-points { list-style: none; }
+    .case-points li {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+      color: var(--muted); font-size: 0.9rem; line-height: 1.5;
+    }
+    .case-points li::before { content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 0.05em; }
+    .case-visual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .case-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 1.25rem;
+    }
+    .case-card-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    .case-card-value { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+    .case-card-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .metric-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 1.25rem; text-align: center;
+    }
+    .metric-num { font-family: var(--serif); font-size: 1.75rem; color: var(--lime); }
+    .metric-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* ── EXPERIENCE ── */
+    .timeline { max-width: 800px; margin: 0 auto; position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--border));
+    }
+    .timeline-item { position: relative; padding-bottom: 3rem; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute; left: -2.35rem; top: 0.35rem;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .timeline-date { font-size: 0.78rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .timeline-title { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 0.25rem; }
+    .timeline-company { color: var(--accent); font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; }
+    .timeline-bullets { list-style: none; }
+    .timeline-bullets li {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      padding: 0.5rem 0; color: var(--muted); font-size: 0.9rem; line-height: 1.6;
+    }
+    .timeline-bullets li::before { content: '·'; color: var(--accent); font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
+    .timeline-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+
+    /* ── SKILLS ── */
+    .skills { background: var(--bg2); }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .skill-group {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem;
+    }
+    .skill-group-title {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .skill-item { margin-bottom: 1rem; }
+    .skill-name { display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.4rem; }
+    .skill-pct { color: var(--muted); font-size: 0.78rem; }
+    .skill-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .skill-fill {
+      height: 100%; background: linear-gradient(90deg, var(--accent), var(--lime));
+      border-radius: 2px; width: 0;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    .achievements-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .achievement-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem; position: relative; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .achievement-card:hover { transform: translateY(-4px); border-color: var(--lime); }
+    .achievement-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .achievement-title { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .achievement-quote {
+      font-size: 0.9rem; font-style: italic; color: var(--muted); line-height: 1.7;
+      padding: 1rem; background: var(--bg); border-radius: var(--radius-sm);
+      border-left: 2px solid var(--lime); margin-top: 1rem;
+    }
+    .achievement-placeholder { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── LEARNING ── */
+    .learning-roadmap { display: flex; flex-wrap: wrap; gap: 1rem; max-width: 900px; margin: 0 auto; }
+    .learning-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem 1.75rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .learning-item:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .learning-item.done { border-color: var(--lime); }
+    .learning-check { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
+    .learning-item.done .learning-check { background: var(--lime); color: #000; }
+    .learning-item:not(.done) .learning-check { background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+    .learning-name { font-weight: 500; font-size: 0.9rem; }
+    .learning-status { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── PHOTOGRAPHY ── */
+    .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 1100px; margin: 0 auto; }
+    .photo-item {
+      border-radius: var(--radius-sm); overflow: hidden;
+      aspect-ratio: 4/3; position: relative;
+      background: var(--surface); border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .photo-item:first-child, .photo-item:nth-child(4) { grid-column: span 2; }
+    .photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .photo-item:hover img { transform: scale(1.05); }
+    .photo-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; color: var(--muted); gap: 0.5rem; font-size: 0.85rem;
+    }
+    .photo-placeholder span:first-child { font-size: 2rem; opacity: 0.4; }
+
+    /* ── FILMMAKING ── */
+    .filmmaking { background: var(--bg2); }
+    .film-content { max-width: 700px; margin: 0 auto; text-align: center; }
+    .film-icon { font-size: 4rem; margin-bottom: 2rem; }
+    .film-text {
+      font-family: var(--serif); font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      line-height: 1.6; color: var(--text); margin-bottom: 1.5rem;
+    }
+    .film-text em { font-style: italic; color: var(--muted); }
+    .film-divider { width: 60px; height: 2px; background: linear-gradient(90deg, var(--accent), var(--lime)); margin: 2rem auto; border-radius: 2px; }
+    .film-punchline { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+
+    /* ── CONVERSATIONS ── */
+    .conversations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; max-width: 1100px; margin: 0 auto; }
+    .thought-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .thought-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .thought-num {
+      font-family: var(--serif); font-size: 3rem; line-height: 1;
+      color: var(--border); position: absolute; top: 0.5rem; right: 1rem;
+    }
+    .thought-context { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    .thought-insight { font-size: 0.95rem; line-height: 1.7; color: var(--text); font-style: italic; margin-bottom: 0.75rem; }
+    .thought-source { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── DREAM ── */
+    .dream { background: var(--bg2); }
+    .dream-content { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .dream-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.25rem; font-size: 1.05rem; }
+    .dream-text strong { color: var(--text); }
+    .dream-visual {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem; text-align: center;
+    }
+    .dream-icons { display: flex; align-items: center; justify-content: center; gap: 1rem; font-size: 3rem; margin-bottom: 1.5rem; }
+    .dream-icons .plus { font-size: 1.5rem; color: var(--muted); font-family: var(--sans); }
+    .dream-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── COMPANIES ── */
+    .companies-grid { display: flex; flex-wrap: wrap; gap: 1rem; max-width: 1100px; margin: 0 auto; }
+    .company-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem 2rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .company-card.featured { border-color: rgba(30,215,96,0.4); background: rgba(30,215,96,0.05); }
+    .company-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .company-emoji { font-size: 1.75rem; }
+    .company-name { font-weight: 600; font-size: 0.95rem; }
+    .company-note { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+    .company-card.featured .company-name { color: #1ED760; }
+
+    /* ── CONTACT ── */
+    .contact-wrapper { max-width: 700px; margin: 0 auto; text-align: center; }
+    .contact-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 2.5rem 0; }
+    .contact-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+      text-decoration: none; color: inherit;
+    }
+    .contact-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--surface-hover); }
+    .contact-icon { font-size: 1.75rem; }
+    .contact-label { font-weight: 600; font-size: 0.9rem; }
+    .contact-val { font-size: 0.78rem; color: var(--muted); }
+    .contact-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 1rem 2.5rem; border-radius: 100px;
+      background: linear-gradient(135deg, var(--accent), #8B5CF6);
+      color: #fff; font-weight: 700; font-size: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .contact-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 40px var(--accent-glow); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem clamp(1.5rem, 8vw, 8rem);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    .footer-sig { font-family: var(--serif); font-style: italic; }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: var(--bg); padding: 80px 2rem 2rem;
+      flex-direction: column; gap: 1.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 1.5rem; font-family: var(--serif); border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-qmark { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .case-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .achievements-grid { grid-template-columns: 1fr; }
+      .dream-content { grid-template-columns: 1fr; }
+      .contact-cards { grid-template-columns: 1fr; }
+      .photo-grid { grid-template-columns: 1fr; }
+      .photo-item:first-child, .photo-item:nth-child(4) { grid-column: span 1; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .metrics-row { grid-template-columns: 1fr; }
+      .case-visual-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .hero-ctas { flex-direction: column; }
+      .btn-primary, .btn-secondary { text-align: center; width: 100%; max-width: 280px; }
+    }
+
+    /* ── COMMAND PALETTE ── */
+    #cmd-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      align-items: flex-start; justify-content: center; padding-top: 120px;
+    }
+    #cmd-overlay.open { display: flex; }
+    #cmd-box {
+      width: 100%; max-width: 560px; border-radius: var(--radius);
+      background: var(--bg2); border: 1px solid var(--border);
+      overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    }
+    #cmd-input {
+      width: 100%; padding: 1rem 1.5rem; background: none;
+      border: none; outline: none; color: var(--text); font-size: 1rem;
+      font-family: var(--sans); border-bottom: 1px solid var(--border);
+    }
+    .cmd-results { max-height: 360px; overflow-y: auto; }
+    .cmd-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.85rem 1.5rem; cursor: pointer; font-size: 0.9rem; color: var(--text);
+      transition: background 0.1s;
+    }
+    .cmd-item:hover, .cmd-item.selected { background: var(--surface); }
+    .cmd-item-icon { font-size: 1rem; color: var(--muted); width: 20px; text-align: center; }
+    #cmd-hint { padding: 0.5rem 1.5rem 0.75rem; font-size: 0.72rem; color: var(--muted); display: flex; gap: 1.5rem; }
+    kbd { background: var(--surface); border: 1px solid var(--border); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.68rem; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Reading Progress -->
+<div id="progress"></div>
+
+<!-- Nav -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">KP<span>.</span></a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Work</a>
+    <a href="#case-studies">Thinking</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-actions">
+    <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+    <button id="cmd-btn" style="padding:0.5rem 1rem;border-radius:100px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:0.8rem;display:flex;align-items:center;gap:0.4rem;">⌘ K</button>
+    <a href="#contact" class="nav-cta">Let's Connect</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#projects" onclick="closeMobile()">Work</a>
+  <a href="#case-studies" onclick="closeMobile()">Thinking</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-qmark">?</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">✦ Available for APM Roles · India</div>
+    <h1 class="hero-headline">
+      Curious enough to<br>
+      <em>question</em> <span class="highlight-word">everything.</span><br>
+      Builder enough to<br>create solutions.
+    </h1>
+    <p class="hero-sub">
+      I'm <strong>Krishna Patil</strong>, an aspiring Product Manager who loves understanding people, uncovering problems, and building products that matter.
+    </p>
+    <div class="hero-ctas">
+      <a href="Krishna_Patil_resume_PM.pdf" download class="btn-primary">↓ View Resume</a>
+      <a href="#projects" class="btn-secondary">Explore Work →</a>
+      <a href="#contact" class="btn-secondary">Let's Connect</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-card">
+        <p class="about-tagline">"I don't have all the answers. That's why I keep asking better questions."</p>
+        <div class="traits">
+          <span class="trait">🔍 Curious</span>
+          <span class="trait">🗂️ Organizer</span>
+          <span class="trait">🌀 Overthinker</span>
+          <span class="trait">🔨 Builder</span>
+          <span class="trait">🎯 Adaptable</span>
+          <span class="trait">📸 Photographer</span>
+        </div>
+        <div class="about-stats">
+          <div class="stat-item">
+            <div class="stat-num">40+</div>
+            <div class="stat-label">User Stories Written</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Major Releases Shipped</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">85%+</div>
+            <div class="stat-label">AI Retrieval Accuracy</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">8.26</div>
+            <div class="stat-label">GPA (BCA)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label reveal">Why Product Management?</div>
+      <h2 class="section-title reveal reveal-delay-1">A different kind of <em>journey</em></h2>
+      <div class="reveal reveal-delay-2">
+        <p>I used to think the path was clear: study, get an MBA abroad, climb the corporate ladder. Business exposure, leadership, strategic decisions — that was the plan.</p>
+        <p>Then I discovered Product Management. And something clicked. <strong>Here was a space where technology met business, where empathy met execution, where curiosity was a superpower — not a liability.</strong></p>
+        <p>Instead of waiting years to gain that exposure, I started building. I shipped features, wrote user stories, talked to users, and learned that the best insights rarely come from decks — they come from conversations.</p>
+        <p>I'm someone who goes deep on problems. Not because I always find the answer, but because <strong>the quality of your questions determines the quality of your products.</strong></p>
+        <div class="about-quote">
+          "The more I learn, the more I realize how much there is to learn. That's exactly why Product Management excites me."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="section-label reveal">Featured Work</div>
+  <h2 class="section-title reveal reveal-delay-1">Products I've <em>built & thought about</em></h2>
+  <div class="projects-grid" style="margin-top:2.5rem;">
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-header">
+        <div class="project-icon">🧠</div>
+        <span class="project-tag">AI / RAG</span>
+      </div>
+      <h3 class="project-title">Doc-to-Answer System</h3>
+      <p class="project-problem">Students waste hours searching through notes, PDFs, and lecture materials before exams. Information overload meets cognitive exhaustion.</p>
+      <div class="project-chips">
+        <span class="chip">Python</span>
+        <span class="chip">FAISS</span>
+        <span class="chip">RAG Architecture</span>
+        <span class="chip">SQL</span>
+        <span class="chip">LLM</span>
+      </div>
+      <div style="margin-bottom:3rem;">
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Impact</div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <div style="background:var(--bg);border-radius:8px;padding:0.6rem 1rem;font-size:0.85rem;"><span style="color:var(--lime);font-weight:700;">~40%</span> <span style="color:var(--muted);">↓ query latency</span></div>
+          <div style="background:var(--bg);border-radius:8px;padding:0.6rem 1rem;font-size:0.85rem;"><span style="color:var(--lime);font-weight:700;">85%+</span> <span style="color:var(--muted);">retrieval accuracy</span></div>
+        </div>
+      </div>
+      <div class="project-lesson">"Great products don't emerge from brilliant ideas. They emerge from persistent user pain."</div>
+      <div class="project-arrow">→</div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-header">
+        <div class="project-icon">📊</div>
+        <span class="project-tag">Analytics</span>
+      </div>
+      <h3 class="project-title">Creator Platform Growth Analysis</h3>
+      <p class="project-problem">A 200+ user creator platform struggling with early retention. Users activated but didn't stick around. Why?</p>
+      <div class="project-chips">
+        <span class="chip">Excel</span>
+        <span class="chip">Product Analytics</span>
+        <span class="chip">A/B Testing</span>
+        <span class="chip">Cohort Analysis</span>
+      </div>
+      <div style="margin-bottom:3rem;">
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">Impact</div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <div style="background:var(--bg);border-radius:8px;padding:0.6rem 1rem;font-size:0.85rem;"><span style="color:var(--lime);font-weight:700;">3</span> <span style="color:var(--muted);">key churn drivers identified</span></div>
+          <div style="background:var(--bg);border-radius:8px;padding:0.6rem 1rem;font-size:0.85rem;"><span style="color:var(--lime);font-weight:700;">10–15%</span> <span style="color:var(--muted);">Day-7 retention uplift</span></div>
+        </div>
+      </div>
+      <div class="project-lesson">"Data tells you what. Conversations tell you why. You need both."</div>
+      <div class="project-arrow">→</div>
+    </div>
+
+    <div class="project-card placeholder reveal reveal-delay-3">
+      <div class="project-header">
+        <div class="project-icon" style="opacity:0.4;">🚀</div>
+        <span class="project-tag" style="opacity:0.4;">Coming Soon</span>
+      </div>
+      <h3 class="project-title" style="color:var(--muted);">Next Project</h3>
+      <p class="project-problem">Currently in the making. Something worth solving always finds its way to the surface.</p>
+      <div style="margin-top:auto;padding-top:2rem;">
+        <div class="project-lesson" style="border-left-color:var(--muted);">"The best problem statements aren't found — they're uncovered."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Case Studies -->
+<section class="case-studies" id="case-studies">
+  <div class="section-label reveal">Product Thinking</div>
+  <h2 class="section-title reveal reveal-delay-1">How I <em>analyze & think</em></h2>
+  <div class="case-tabs reveal reveal-delay-2">
+    <button class="case-tab active" onclick="switchCase('spotify')">🎵 Spotify Analysis</button>
+    <button class="case-tab" onclick="switchCase('swiggy')">🍔 Swiggy Feature</button>
+  </div>
+
+  <div class="case-panel active" id="case-spotify">
+    <div class="case-grid">
+      <div class="case-meta reveal">
+        <h3>Why Spotify Wins at Product</h3>
+        <p>Spotify isn't just a music app. It's a personalization engine disguised as entertainment. Here's what makes their product decisions extraordinary.</p>
+        <ul class="case-points">
+          <li>Discover Weekly turned passive listeners into active discoverers — 40M+ users engaged in its first week</li>
+          <li>Personalization creates a positive feedback loop: the more you listen, the better it gets, the more you listen</li>
+          <li>Social features (Wrapped, shared playlists) turn product usage into cultural moments, driving organic growth</li>
+          <li>Free tier isn't a charity — it's the world's largest user research panel, informing every premium decision</li>
+          <li>Podcast integration creates a singular audio destination, reducing context-switching for users</li>
+          <li>Data flywheel: user behavior → better recommendations → more engagement → more data</li>
+        </ul>
+        <div class="about-quote" style="margin-top:1.5rem;">The best products make users feel understood without ever asking intrusive questions.</div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="case-visual-grid">
+          <div class="case-card">
+            <div class="case-card-label">Retention Loop</div>
+            <div class="case-card-value">Daily Active Use</div>
+            <div class="case-card-sub">Recommendations improve with every play → habit formation</div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-label">Discover Weekly</div>
+            <div class="case-card-value">Every Monday</div>
+            <div class="case-card-sub">Gives users a reason to open the app weekly without push notifications</div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-label">Free → Paid</div>
+            <div class="case-card-value">Friction-first</div>
+            <div class="case-card-sub">Ads create enough friction to convert without killing the free experience</div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-label">Spotify Wrapped</div>
+            <div class="case-card-value">Annual Virality</div>
+            <div class="case-card-sub">Turns personal data into sharable identity — free acquisition campaign</div>
+          </div>
+        </div>
+        <div class="metrics-row">
+          <div class="metric-box">
+            <div class="metric-num">600M+</div>
+            <div class="metric-label">Monthly Active Users</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-num">31%</div>
+            <div class="metric-label">Free → Premium Conversion</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-num">5B+</div>
+            <div class="metric-label">Playlists Created</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="case-panel" id="case-swiggy">
+    <div class="case-grid">
+      <div class="case-meta reveal">
+        <h3>Swiggy Group Ordering Feature</h3>
+        <p>Ordering food for a group is still painfully broken. One person plays coordinator while others keep changing their minds. Here's how I'd fix it.</p>
+        <div style="margin:1.5rem 0;">
+          <div class="section-label" style="margin-bottom:0.75rem;">Problem Statement</div>
+          <p>When 3+ people order together, the experience fragments — screenshots, screenshots forwarded on WhatsApp, someone always forgets. The friction kills the joy of group dining.</p>
+        </div>
+        <ul class="case-points">
+          <li><strong>Persona:</strong> College students & office colleagues ordering lunch together</li>
+          <li><strong>Pain:</strong> No real-time collaboration → one person carries the cognitive load</li>
+          <li><strong>Solution:</strong> Shared cart with individual selections, live updates, split-payment</li>
+          <li><strong>Prioritization:</strong> RICE Score — High Reach (group orders = 35% of volume), High Impact on retention, Moderate Effort</li>
+          <li><strong>Success Metrics:</strong> Group order frequency, avg. order value, re-order rate within 7 days</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="case-visual-grid">
+          <div class="case-card">
+            <div class="case-card-label">User Journey</div>
+            <div class="case-card-value">6 → 3 Steps</div>
+            <div class="case-card-sub">From "share screenshot" to "open shared cart link"</div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-label">RICE Score</div>
+            <div class="case-card-value">High Priority</div>
+            <div class="case-card-sub">Reach × Impact / Confidence × Effort favors this feature</div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-label">Key Feature</div>
+            <div class="case-card-value">Live Shared Cart</div>
+            <div class="case-card-sub">Real-time item additions visible to all participants</div>
+          </div>
+          <div class="case-card">
+            <div class="case-card-label">Monetization</div>
+            <div class="case-card-value">↑ Avg Order Value</div>
+            <div class="case-card-sub">Groups order more variety when friction is removed</div>
+          </div>
+        </div>
+        <div class="metrics-row">
+          <div class="metric-box">
+            <div class="metric-num">+25%</div>
+            <div class="metric-label">Projected AOV Increase</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-num">-60%</div>
+            <div class="metric-label">Order Coordination Time</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-num">+15%</div>
+            <div class="metric-label">Group Re-order Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experience -->
+<section id="experience">
+  <div class="section-label reveal">Experience</div>
+  <h2 class="section-title reveal reveal-delay-1">Where I've <em>learned & built</em></h2>
+  <div class="timeline" style="margin-top:3rem;">
+    <div class="timeline-item reveal reveal-delay-1">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Nov 2025 – Apr 2026</div>
+      <div class="timeline-title">Product Management Intern</div>
+      <div class="timeline-company">Fealty Technologies Pvt. Ltd. · Indore, India</div>
+      <ul class="timeline-bullets">
+        <li>Defined end-to-end requirements for inventory and supplier modules across V1–V3 releases; authored 40+ user stories with detailed acceptance criteria, enabling a 6-member engineering team to reduce clarification cycles by ~30%</li>
+        <li>Partnered with engineering, design, and business stakeholders to translate ambiguous business needs into structured backend workflows and API-driven specs; bridged product vision and technical execution across 3 major releases without scope creep</li>
+      </ul>
+      <div class="timeline-skills">
+        <span class="chip">User Stories</span>
+        <span class="chip">Stakeholder Management</span>
+        <span class="chip">API Specs</span>
+        <span class="chip">Jira</span>
+        <span class="chip">Product Delivery</span>
+      </div>
+    </div>
+    <div class="timeline-item reveal reveal-delay-2">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Oct 2025 – Nov 2025</div>
+      <div class="timeline-title">Founder's Office Intern</div>
+      <div class="timeline-company">PM Ready · Noida, India</div>
+      <ul class="timeline-bullets">
+        <li>Conducted structured competitor analysis across 10+ EdTech platforms; synthesized findings into a positioning framework that helped the founding team identify 3 differentiated product opportunities</li>
+        <li>Mapped user pain points through qualitative research, contributing to early-stage product roadmap prioritization using RICE scoring framework; findings influenced feature sequencing for V1 launch</li>
+      </ul>
+      <div class="timeline-skills">
+        <span class="chip">Market Research</span>
+        <span class="chip">RICE Framework</span>
+        <span class="chip">User Research</span>
+        <span class="chip">Roadmapping</span>
+      </div>
+    </div>
+    <div class="timeline-item reveal reveal-delay-3">
+      <div class="timeline-dot" style="background:var(--lime);box-shadow:0 0 0 3px var(--lime-dim);"></div>
+      <div class="timeline-date">2022 – 2025</div>
+      <div class="timeline-title">Head of Photography Club</div>
+      <div class="timeline-company">Presidency College · Bangalore, India</div>
+      <ul class="timeline-bullets">
+        <li>Led a team of photographers for college events — delegating shoots, managing timelines, and coordinating with event organizers (stakeholder management before I knew the term)</li>
+        <li>Planned and executed end-to-end photography coverage for cultural events: pre-event planning, day-of coordination, post-production delivery cycles</li>
+        <li>Built documentation practices for shot lists and post-processing workflows — my first taste of process design</li>
+      </ul>
+      <div class="timeline-skills">
+        <span class="chip">Team Leadership</span>
+        <span class="chip">Delegation</span>
+        <span class="chip">Event Planning</span>
+        <span class="chip">Process Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section class="skills" id="skills">
+  <div class="section-label reveal">Capabilities</div>
+  <h2 class="section-title reveal reveal-delay-1">What I <em>bring to the table</em></h2>
+  <div class="skills-grid" style="margin-top:2.5rem;">
+    <div class="skill-group reveal reveal-delay-1">
+      <div class="skill-group-title">Product Skills</div>
+      <div class="skill-item"><div class="skill-name"><span>User Research</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Product Strategy</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Roadmapping</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Product Analytics</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Prioritization (RICE)</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Market Research</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+    </div>
+    <div class="skill-group reveal reveal-delay-2">
+      <div class="skill-group-title">Technical Skills</div>
+      <div class="skill-item"><div class="skill-name"><span>SQL (PostgreSQL)</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Python</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>HTML / CSS / JS</span><span class="skill-pct">65%</span></div><div class="skill-bar"><div class="skill-fill" data-w="65"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Figma</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Mixpanel / Amplitude</span><span class="skill-pct">65%</span></div><div class="skill-bar"><div class="skill-fill" data-w="65"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Git</span><span class="skill-pct">60%</span></div><div class="skill-bar"><div class="skill-fill" data-w="60"></div></div></div>
+    </div>
+    <div class="skill-group reveal reveal-delay-3">
+      <div class="skill-group-title">Leadership Skills</div>
+      <div class="skill-item"><div class="skill-name"><span>Delegation</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Stakeholder Mgmt</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Communication</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Adaptability</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Problem-Solving</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
+      <div class="skill-item"><div class="skill-name"><span>Team Management</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Achievements -->
+<section id="achievements">
+  <div class="section-label reveal">Recognition</div>
+  <h2 class="section-title reveal reveal-delay-1">Things I'm <em>proud of</em></h2>
+  <div class="achievements-grid" style="margin-top:2.5rem;">
+    <div class="achievement-card reveal reveal-delay-1">
+      <div class="achievement-icon">🏑</div>
+      <h3 class="achievement-title">State-Level Hockey · Silver Medal</h3>
+      <p class="achievement-placeholder" style="color:var(--muted);font-size:0.9rem;margin-top:0.5rem;">Represented Karnataka at the state-level hockey championship. Played as part of a team under real competitive pressure — learned that strategy, stamina, and trust in your teammates wins more matches than individual brilliance.</p>
+      <div class="achievement-quote">
+        "It's strange that the achievements we're most proud of often come from the things we're most passionate about."
+      </div>
+    </div>
+    <div class="achievement-card reveal reveal-delay-2">
+      <div class="achievement-icon">📷</div>
+      <h3 class="achievement-title">Photography Competitions</h3>
+      <p class="achievement-placeholder" style="color:var(--muted);font-size:0.9rem;margin-top:0.5rem;">Participated and placed in college and inter-college photography competitions. Photography taught me to slow down, observe, and find the interesting angle — a skill that transfers directly to product thinking.</p>
+      <div class="achievement-quote" style="border-left-color:var(--accent);">
+        "[Update with specific competition details & placement]"
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Learning Journey -->
+<section style="background:var(--bg2);" id="learning">
+  <div class="section-label reveal">Growth</div>
+  <h2 class="section-title reveal reveal-delay-1">Currently <em>learning</em></h2>
+  <p class="reveal reveal-delay-2" style="color:var(--muted);max-width:560px;margin-bottom:2.5rem;font-size:1rem;line-height:1.7;">Learning isn't a phase for me — it's a permanent state. Here's what I'm actively building into my thinking:</p>
+  <div class="learning-roadmap reveal reveal-delay-3">
+    <div class="learning-item done">
+      <div class="learning-check">✓</div>
+      <div>
+        <div class="learning-name">Product Management 101</div>
+        <div class="learning-status">Certified · Completed</div>
+      </div>
+    </div>
+    <div class="learning-item done">
+      <div class="learning-check">✓</div>
+      <div>
+        <div class="learning-name">SQL</div>
+        <div class="learning-status">Certified · Completed</div>
+      </div>
+    </div>
+    <div class="learning-item" style="border-color:var(--accent);">
+      <div class="learning-check" style="background:var(--accent-glow);border-color:var(--accent);color:var(--accent);">↻</div>
+      <div>
+        <div class="learning-name">User Research</div>
+        <div class="learning-status">In Progress</div>
+      </div>
+    </div>
+    <div class="learning-item" style="border-color:var(--accent);">
+      <div class="learning-check" style="background:var(--accent-glow);border-color:var(--accent);color:var(--accent);">↻</div>
+      <div>
+        <div class="learning-name">Product Strategy</div>
+        <div class="learning-status">In Progress</div>
+      </div>
+    </div>
+    <div class="learning-item">
+      <div class="learning-check">○</div>
+      <div>
+        <div class="learning-name">Product Analytics</div>
+        <div class="learning-status">Up Next</div>
+      </div>
+    </div>
+    <div class="learning-item">
+      <div class="learning-check">○</div>
+      <div>
+        <div class="learning-name">Growth & Monetization</div>
+        <div class="learning-status">Planned</div>
+      </div>
+    </div>
+    <div class="learning-item" style="border-style:dashed;">
+      <div class="learning-check">+</div>
+      <div>
+        <div class="learning-name">Always something new...</div>
+        <div class="learning-status">The list never ends</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Photography -->
+<section id="photography">
+  <div class="section-label reveal">Through My Lens</div>
+  <h2 class="section-title reveal reveal-delay-1">A different kind of <em>product thinking</em></h2>
+  <p class="reveal reveal-delay-2" style="color:var(--muted);max-width:560px;margin-bottom:2.5rem;font-size:1rem;line-height:1.7;">Photography taught me to observe before acting. To find the angle others miss. To tell stories without words. All of this translates — directly — to product.</p>
+  <div class="photo-grid reveal reveal-delay-3">
+    <div class="photo-item">
+      <div class="photo-placeholder"><span>🌅</span><span>Add your best shot here</span></div>
+    </div>
+    <div class="photo-item">
+      <div class="photo-placeholder"><span>🏙️</span><span>Your frame, your story</span></div>
+    </div>
+    <div class="photo-item">
+      <div class="photo-placeholder"><span>🌿</span><span>Details matter</span></div>
+    </div>
+    <div class="photo-item">
+      <div class="photo-placeholder"><span>🔦</span><span>Light & shadow</span></div>
+    </div>
+    <div class="photo-item">
+      <div class="photo-placeholder"><span>👤</span><span>People tell stories</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Filmmaking -->
+<section class="filmmaking" id="filmmaking">
+  <div class="film-content reveal">
+    <div class="film-icon">🎬</div>
+    <div class="section-label" style="text-align:center;justify-content:center;display:flex;margin-bottom:1rem;">Stories I Wanted To Tell</div>
+    <p class="film-text">
+      Filmmaking was a passion I never had the courage to pursue professionally.
+    </p>
+    <p class="film-text" style="font-size:1.1rem;">
+      <em>But it taught me something invaluable:</em>
+    </p>
+    <div class="film-divider"></div>
+    <p class="film-punchline">
+      Every great story starts with understanding people.<br>
+      <span style="color:var(--accent);">That's also what great products do.</span>
+    </p>
+    <p style="color:var(--muted);margin-top:1.5rem;font-size:0.9rem;line-height:1.7;">
+      Whether it's a three-minute short or a three-month product sprint — the question is always the same: <em>who is this for, and what do they feel when they experience it?</em>
+    </p>
+  </div>
+</section>
+
+<!-- Conversations -->
+<section id="conversations">
+  <div class="section-label reveal">Lessons from Strangers</div>
+  <h2 class="section-title reveal reveal-delay-1">What strangers have <em>taught me</em></h2>
+  <p class="reveal reveal-delay-2" style="color:var(--muted);max-width:560px;margin-bottom:2.5rem;font-size:1rem;line-height:1.7;">I enjoy speaking with strangers more than people I already know. They challenge your assumptions without the filter of familiarity.</p>
+  <div class="conversations-grid">
+    <div class="thought-card reveal reveal-delay-1">
+      <div class="thought-num">01</div>
+      <div class="thought-context">🚂 Train to Indore</div>
+      <p class="thought-insight">"Most people are trying to solve problems they think they have — not the ones they actually do."</p>
+      <div class="thought-source">A software engineer who quit his job to open a chai stall</div>
+    </div>
+    <div class="thought-card reveal reveal-delay-2">
+      <div class="thought-num">02</div>
+      <div class="thought-context">☕ Coffee Shop, Bangalore</div>
+      <p class="thought-insight">"The best ideas I've had came from conversations I wasn't trying to make productive."</p>
+      <div class="thought-source">An architect who also writes poetry</div>
+    </div>
+    <div class="thought-card reveal reveal-delay-3">
+      <div class="thought-num">03</div>
+      <div class="thought-context">🏥 Hospital Waiting Room</div>
+      <p class="thought-insight">"There are only two ways to learn anything — make the mistake yourself, or listen to someone who already did."</p>
+      <div class="thought-source">A retired teacher with 30 years of classroom stories</div>
+    </div>
+    <div class="thought-card reveal" style="border-style:dashed;opacity:0.6;">
+      <div class="thought-num">+</div>
+      <div class="thought-context">Somewhere soon</div>
+      <p class="thought-insight">"The next great conversation is always just one brave hello away."</p>
+      <div class="thought-source">Update with your own conversation</div>
+    </div>
+  </div>
+</section>
+
+<!-- Dream -->
+<section class="dream" id="dream">
+  <div class="section-label reveal">Beyond the Roadmap</div>
+  <h2 class="section-title reveal reveal-delay-1">What I'm ultimately <em>building toward</em></h2>
+  <div class="dream-content" style="margin-top:3rem;">
+    <div class="dream-text reveal reveal-delay-1">
+      <p>My immediate goal is clear: <strong>become a Product Manager</strong> who ships things that genuinely improve people's lives.</p>
+      <p>But beyond product, I dream of building a restaurant someday. Not because I want to leave product. <strong>Because great restaurants and great products solve the exact same problem:</strong></p>
+      <div class="about-quote">Creating experiences people want to come back to.</div>
+      <p style="margin-top:1.25rem;">In a restaurant, you optimize for delight — ambiance, taste, service, memory. In a product, you optimize for value — speed, clarity, satisfaction, retention.</p>
+      <p><strong>The craft is the same. The tools are different.</strong></p>
+    </div>
+    <div class="dream-visual reveal reveal-delay-2">
+      <div class="dream-icons">
+        <span>📱</span>
+        <span class="plus">+</span>
+        <span>🍽️</span>
+      </div>
+      <p class="dream-desc">
+        A product that earns daily opens.<br>A restaurant that earns return visits.<br><br>
+        Both are built on the same foundation: deep empathy for the person on the other side of the experience.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Companies -->
+<section id="companies">
+  <div class="section-label reveal">Dream Destinations</div>
+  <h2 class="section-title reveal reveal-delay-1">Companies I'd love to <em>build for</em></h2>
+  <div class="companies-grid" style="margin-top:2.5rem;">
+    <div class="company-card featured reveal reveal-delay-1">
+      <div class="company-emoji">🎵</div>
+      <div>
+        <div class="company-name">Spotify</div>
+        <div class="company-note">Mostly because of the product culture. The lifetime premium account would be a bonus.</div>
+      </div>
+    </div>
+    <div class="company-card reveal reveal-delay-2">
+      <div class="company-emoji">🔵</div>
+      <div>
+        <div class="company-name">Notion</div>
+        <div class="company-note">Products that feel like they were designed for how you actually think.</div>
+      </div>
+    </div>
+    <div class="company-card reveal reveal-delay-3">
+      <div class="company-emoji">🦁</div>
+      <div>
+        <div class="company-name">Swiggy / Zepto</div>
+        <div class="company-note">Building for India at scale is one of the hardest, most meaningful problems.</div>
+      </div>
+    </div>
+    <div class="company-card reveal reveal-delay-4">
+      <div class="company-emoji">🧠</div>
+      <div>
+        <div class="company-name">Any AI-first Product</div>
+        <div class="company-note">The interface between AI and humans is the most exciting design problem of our time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section style="background:var(--bg2);" id="contact">
+  <div class="contact-wrapper">
+    <div class="section-label reveal" style="justify-content:center;display:flex;">Let's Talk</div>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">I'm one message <em>away</em></h2>
+    <p class="reveal reveal-delay-2" style="color:var(--muted);text-align:center;margin-bottom:0.5rem;font-size:1rem;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto;">
+      Whether you're a recruiter, a fellow builder, or just someone who wants to talk about product — I'm always up for a good conversation.
+    </p>
+    <div class="contact-cards reveal reveal-delay-3">
+      <a href="mailto:krishnapatilkittu@gmail.com" class="contact-card">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-label">Email</div>
+        <div class="contact-val">krishnapatilkittu@gmail.com</div>
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="contact-card">
+        <div class="contact-icon">💼</div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-val">Connect with me</div>
+      </a>
+      <a href="https://github.com" target="_blank" class="contact-card">
+        <div class="contact-icon">🐙</div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-val">See what I've built</div>
+      </a>
+      <a href="Krishna_Patil_resume_PM.pdf" download class="contact-card">
+        <div class="contact-icon">📄</div>
+        <div class="contact-label">Resume</div>
+        <div class="contact-val">Download PDF</div>
+      </a>
+    </div>
+    <div class="reveal reveal-delay-4" style="text-align:center;">
+      <a href="mailto:krishnapatilkittu@gmail.com" class="contact-cta">Say hello →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p class="footer-sig">Krishna Patil — Aspiring PM</p>
+  <p style="color:var(--muted);font-size:0.78rem;">Built with curiosity & too many questions · 2025</p>
+  <p style="color:var(--muted);font-size:0.78rem;">Bangalore, India 🇮🇳</p>
+</footer>
+
+<!-- Command Palette -->
+<div id="cmd-overlay" onclick="closeCmd(event)">
+  <div id="cmd-box">
+    <input id="cmd-input" placeholder="Type to navigate..." autocomplete="off" />
+    <div class="cmd-results" id="cmd-results"></div>
+    <div id="cmd-hint"><span><kbd>↑↓</kbd> Navigate</span><span><kbd>Enter</kbd> Go</span><span><kbd>Esc</kbd> Close</span></div>
+  </div>
+</div>
+
+<script>
+  /* ── THEME ── */
+  const themeBtn = document.getElementById('theme-toggle');
+  let isDark = true;
+  themeBtn.addEventListener('click', () => {
+    isDark = !isDark;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    themeBtn.textContent = isDark ? '🌙' : '☀️';
+  });
+
+  /* ── PROGRESS BAR ── */
+  window.addEventListener('scroll', () => {
+    const prog = document.getElementById('progress');
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (scrolled / total * 100) + '%';
+
+    // Nav border
+    document.getElementById('navbar').classList.toggle('scrolled', scrolled > 50);
+  });
+
+  /* ── SCROLL REVEAL ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Skill bars
+        e.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Also observe skill groups separately for bars
+  document.querySelectorAll('.skill-group').forEach(el => {
+    const skillObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.skill-fill').forEach(bar => {
+            bar.style.width = bar.dataset.w + '%';
+          });
+          skillObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    skillObs.observe(el);
+  });
+
+  /* ── MOBILE MENU ── */
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  });
+  function closeMobile() {
+    document.getElementById('mobile-menu').classList.remove('open');
+  }
+
+  /* ── CASE STUDY TABS ── */
+  function switchCase(id) {
+    document.querySelectorAll('.case-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.case-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('case-' + id).classList.add('active');
+  }
+
+  /* ── COMMAND PALETTE ── */
+  const cmdItems = [
+    { icon: '🏠', label: 'Home', href: '#home' },
+    { icon: '👤', label: 'About', href: '#about' },
+    { icon: '🔨', label: 'Projects', href: '#projects' },
+    { icon: '🧠', label: 'Product Thinking', href: '#case-studies' },
+    { icon: '💼', label: 'Experience', href: '#experience' },
+    { icon: '⚡', label: 'Skills', href: '#skills' },
+    { icon: '🏆', label: 'Achievements', href: '#achievements' },
+    { icon: '📚', label: 'Learning Journey', href: '#learning' },
+    { icon: '📸', label: 'Photography', href: '#photography' },
+    { icon: '🎬', label: 'Filmmaking', href: '#filmmaking' },
+    { icon: '💬', label: 'Conversations', href: '#conversations' },
+    { icon: '🌟', label: 'Dream', href: '#dream' },
+    { icon: '✉️', label: 'Contact', href: '#contact' },
+    { icon: '📄', label: 'Download Resume', href: 'Krishna_Patil_resume_PM.pdf', download: true },
+  ];
+
+  let selectedIdx = 0;
+  let filteredItems = [...cmdItems];
+
+  function renderCmd(query = '') {
+    filteredItems = cmdItems.filter(i => i.label.toLowerCase().includes(query.toLowerCase()));
+    const res = document.getElementById('cmd-results');
+    res.innerHTML = filteredItems.map((item, i) =>
+      `<div class="cmd-item ${i === selectedIdx ? 'selected' : ''}" onclick="goCmd('${item.href}', ${!!item.download})">
+        <span class="cmd-item-icon">${item.icon}</span>
+        <span>${item.label}</span>
+      </div>`
+    ).join('');
+  }
+
+  function goCmd(href, download) {
+    closeCmd();
+    if (download) { const a = document.createElement('a'); a.href = href; a.download = ''; a.click(); }
+    else { document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' }); }
+  }
+
+  function openCmd() {
+    document.getElementById('cmd-overlay').classList.add('open');
+    document.getElementById('cmd-input').value = '';
+    selectedIdx = 0;
+    renderCmd('');
+    setTimeout(() => document.getElementById('cmd-input').focus(), 50);
+  }
+
+  function closeCmd(e) {
+    if (!e || e.target === document.getElementById('cmd-overlay')) {
+      document.getElementById('cmd-overlay').classList.remove('open');
+    }
+  }
+
+  document.getElementById('cmd-btn').addEventListener('click', openCmd);
+  document.getElementById('cmd-input').addEventListener('input', e => { selectedIdx = 0; renderCmd(e.target.value); });
+  document.getElementById('cmd-input').addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { selectedIdx = Math.min(selectedIdx + 1, filteredItems.length - 1); renderCmd(e.target.value); }
+    if (e.key === 'ArrowUp') { selectedIdx = Math.max(selectedIdx - 1, 0); renderCmd(e.target.value); }
+    if (e.key === 'Enter') { const item = filteredItems[selectedIdx]; if (item) goCmd(item.href, !!item.download); }
+    if (e.key === 'Escape') closeCmd();
+  });
+
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCmd(); }
+  });
+
+  renderCmd('');
+</script>
+</body>
+</html>
