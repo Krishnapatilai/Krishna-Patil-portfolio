@@ -487,8 +487,13 @@
       cursor: pointer;
     }
     .photo-item:first-child, .photo-item:nth-child(4) { grid-column: span 2; }
-    .photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-    .photo-item:hover img { transform: scale(1.05); }
+.photo-item img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  filter: contrast(1.3);
+  transition: transform 0.4s; 
+}    .photo-item:hover img { transform: scale(1.05); }
     .photo-placeholder {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       height: 100%; color: var(--muted); gap: 0.5rem; font-size: 0.85rem;
